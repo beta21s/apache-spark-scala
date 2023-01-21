@@ -1,0 +1,7 @@
+*.xml
+spark-join/.idea/*
+*.cache
+*.jar
+*.class
+spark-join/project/target/*
+spark-join/target/stream/*
