@@ -4,4 +4,4 @@ spark-join/.idea/*
 *.jar
 *.class
 spark-join/project/target/*
-spark-join/target/stream/*
+spark-join/target/

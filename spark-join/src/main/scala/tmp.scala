@@ -10,30 +10,23 @@ object tmp {
   def main(args: Array[String]): Unit = {
 
     val spark: SparkSession = SparkSession.builder()
-      .appName("Redis")
+      .appName("tmp")
       .master("local[*]")
       .getOrCreate()
 
-    val s3accessKeyAws = "z28lmtYfRoaZf2gB"
-    val s3secretKeyAws = "mM7gBO7M1AaD1NnkoBsk5u1zvRvFR7S8"
-    val connectionTimeOut = "600000"
-    val s3endPointLoc: String = "http://172.20.9.10:9000"
+    import spark.sqlContext.implicits._
+    val emp = Seq("1", "1", "2", "3")
+    val empColumns = Seq(
+      "value",
+    )
+    val empDF = emp.toDF(empColumns: _*)
+    empDF.show(false)
 
-    spark.sparkContext.hadoopConfiguration.set("fs.s3a.endpoint", s3endPointLoc)
-    spark.sparkContext.hadoopConfiguration.set("fs.s3a.access.key", s3accessKeyAws)
-    spark.sparkContext.hadoopConfiguration.set("fs.s3a.secret.key", s3secretKeyAws)
-    spark.sparkContext.hadoopConfiguration.set("fs.s3a.connection.timeout", connectionTimeOut)
+    val dept = Seq("5", "6", "7", "8", "1", "1")
+    val deptColumns = Seq("value")
+    val deptDF = dept.toDF(deptColumns: _*)
+    deptDF.show(false)
 
-    spark.sparkContext.hadoopConfiguration.set("spark.sql.debug.maxToStringFields", "100")
-    spark.sparkContext.hadoopConfiguration.set("fs.s3a.path.style.access", "true")
-    spark.sparkContext.hadoopConfiguration.set("fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
-    spark.sparkContext.hadoopConfiguration.set("fs.s3a.connection.ssl.enabled", "false")
-
-    val sc = spark.sparkContext
-    import spark.implicits._
-
-    val s3path = "hdfs://172.20.9.30:9000/join-80/file00"
-    val tmp: RDD[String] = sc.textFile(s3path)
-    tmp.toDF().show(false)
+    empDF.join(deptDF, empDF("value") ===  deptDF("value"),"leftsemi").show(false)
   }
 }

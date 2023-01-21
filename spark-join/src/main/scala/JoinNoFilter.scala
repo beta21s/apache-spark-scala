@@ -47,7 +47,7 @@ object JoinNoFilter {
     val dfR = rddR.toDF()
 
 
-    val rddKQ = dfL.join(dfR, dfL("value") === dfR("value"), "left")
+    val rddKQ = dfL.join(dfR, dfL("value") === dfR("value"), "leftsemi")
     rddKQ.show()
 
     println(
