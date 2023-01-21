@@ -1,9 +1,11 @@
 package com.truongtpa
 
+import breeze.util.BloomFilter
 import com.redislabs.provider.redis.toRedisContext
 import org.apache.spark.sql.SparkSession
 import com.redislabs.provider.redis._
 import com.redislabs.provider.redis._
+import com.truongtpa.JoinHDFS.checkContains
 import org.apache.spark.rdd.RDD
 
 object tmp {
@@ -15,18 +17,27 @@ object tmp {
       .getOrCreate()
 
     import spark.sqlContext.implicits._
-    val emp = Seq("1", "1", "2", "3")
-    val empColumns = Seq(
-      "value",
-    )
-    val empDF = emp.toDF(empColumns: _*)
-    empDF.show(false)
 
-    val dept = Seq("5", "6", "7", "8", "1", "1")
-    val deptColumns = Seq("value")
-    val deptDF = dept.toDF(deptColumns: _*)
-    deptDF.show(false)
+//    val path = "/home/fit/Documents/apache-spark-scala/spark-join/datasource/"
+//    val rddr = spark.sparkContext.textFile(path + "r.txt").map(item => item.split(",")(0))
+//    val rddl = spark.sparkContext.textFile(path + "l.txt").map(item => item.split(",")(0))
+//
+//    val bf = rddr.mapPartitions { iter =>
+//      val bf = BloomFilter.optimallySized[String](20000000, 0.001)
+//      iter.foreach(i => bf += i)
+//      Iterator(bf)
+//    }.reduce(_ | _)
+//
+//    val rdds = rddl.filter(item => bf.contains(item))
+//
+//    println(
+//      "R: " + rdds.count()
+//    )
 
-    empDF.join(deptDF, empDF("value") ===  deptDF("value"),"leftsemi").show(false)
+    val path = "/home/fit/Documents/apache-spark-scala/spark-join/datasource/"
+    val rddr = spark.sparkContext.textFile(path + "r.txt").toDF()
+    val rddl = spark.sparkContext.textFile(path + "l.txt").toDF()
+
+    rddl.join(rddr, rddr("value") === rddl("value"), "leftsemi").show()
   }
 }

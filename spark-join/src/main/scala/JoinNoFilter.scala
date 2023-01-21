@@ -46,14 +46,11 @@ object JoinNoFilter {
     val dfL = rddL.toDF()
     val dfR = rddR.toDF()
 
-
-    val rddKQ = dfL.join(dfR, dfL("value") === dfR("value"), "leftsemi")
+    val rddKQ = dfR.join(dfL, dfL("value") === dfR("value"), "leftsemi")
     rddKQ.show()
 
     println(
-      "Data Diff: L: " + rddL.count()
-        + ", R: " + rddR.count()
-        + ", Diff: " + rddKQ.count()
+        ", Diff: " + rddKQ.count()
         + ", Time: " + (System.currentTimeMillis() - startTimeMillis) / 1000
     )
   }
