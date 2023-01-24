@@ -8,7 +8,7 @@ aws --endpoint-url http://172.20.9.10:9000 s3 cp /home/fit/Desktop/demo1/target/
 spark-submit \
 --master spark://172.20.17.1:7077 \
 --conf spark.dynamicAllocation.executorIdleTimeout=1000 \
---class com.truongtpa.save2Redis /home/fit/Desktop/demo1/target/scala-2.12/demo1-assembly-0.1.0-SNAPSHOT.jar
+--class com.truongtpa.save2Redis. /home/fit/Desktop/demo1/target/scala-2.12/demo1-assembly-0.1.0-SNAPSHOT.jar
 
 #spark-submit \
 #--master spark://172.20.17.1:7077 \

@@ -15,8 +15,8 @@ then
     spark-submit \
     --master spark://172.20.17.1:7077 \
     --conf spark.executor.memory=8g \
-    --conf spark.dynamicAllocation.executorIdleTimeout=1000 \
-    --class com.truongtpa.JoinNoFilter /home/fit/Desktop/demo1/target/scala-2.12/demo1-assembly-0.1.0-SNAPSHOT.jar
+    --conf spark.dynamicAllocation.executorIdleTimeout=10000 \
+    --class com.truongtpa.JoinCluster.BFHDFS /home/fit/Documents/apache-spark-scala/spark-join/target/scala-2.12/spark-join-assembly-0.1.0-SNAPSHOT.jar
   done
 fi
 
