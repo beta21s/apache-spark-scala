@@ -14,7 +14,7 @@ object delKQ {
       .master("local[*]")
       .getOrCreate()
 
-    val filename = "hdfs-cluster-scenarios-1.parquet"
+    val filename = "no-filter-hdfs-cluster-scenarios-3.parquet"
 
     // Delete ll content
     import spark.implicits._
