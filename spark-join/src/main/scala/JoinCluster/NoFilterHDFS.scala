@@ -16,8 +16,8 @@ object NoFilterHDFS {
 
     val startTimeMillis = System.currentTimeMillis()
 
-    val appName = "NoFilter HDFS Cluster 30GB 20GB"
-    val filename = "no-filter-hdfs-cluster-scenarios-3.parquet"
+    val appName = "NoFilter HDFS Cluster 10GB 10GB"
+    val filename = "no-filter-hdfs-cluster-scenarios-1.parquet"
 
     val spark: SparkSession = SparkSession.builder()
       .appName(appName)
@@ -30,7 +30,7 @@ object NoFilterHDFS {
     import spark.implicits._
 
     var rddL: RDD[String] = spark.sparkContext.emptyRDD[String]
-    for (index <- 0 to 2) {
+    for (index <- 0 to 0) {
       println("Read file" + index)
       val path = "hdfs://172.20.9.30:9000/join-80/file0" + index
       val tmp: RDD[String] = sc.textFile(path).map(item => item.split(",")(0))
@@ -38,7 +38,7 @@ object NoFilterHDFS {
     }
 
     var rddR: RDD[String] = spark.sparkContext.emptyRDD[String]
-    for (index <- 3 to 4) {
+    for (index <- 1 to 1) {
       println("Read file" + index)
       val path = "hdfs://172.20.9.30:9000/join-80/file0" + index
       val tmp: RDD[String] = sc.textFile(path).map(item => item.split(",")(0))

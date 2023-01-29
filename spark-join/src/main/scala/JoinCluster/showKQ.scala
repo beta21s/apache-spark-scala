@@ -15,7 +15,7 @@ object showKQ {
       .master("local[*]")
       .getOrCreate()
 
-    val filename = "no-filter-hdfs-cluster-scenarios-3.parquet"
+    val filename = "hdfs-cluster-scenarios-3.parquet"
 
     import spark.implicits._
     spark.read.parquet("hdfs://172.20.9.30:9000/result/" + filename).show(false)
