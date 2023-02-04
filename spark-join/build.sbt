@@ -14,8 +14,8 @@ libraryDependencies ++= Seq(
   "org.apache.spark" %% "spark-sql" % sparkVersion,
   "org.apache.spark" %% "spark-graphx" % sparkVersion,
 )
-libraryDependencies += "org.apache.ignite" % "ignite-indexing" % "2.14.0"
-libraryDependencies += "org.apache.ignite" % "ignite-spark-ext" % "3.0.0"
+
+// libraryDependencies += "org.apache.ignite" % "ignite-spark-ext" % "3.0.0"
 libraryDependencies += "com.redislabs" %% "spark-redis" % "3.0.0"
 libraryDependencies += "org.apache.hadoop" % "hadoop-aws" % "2.7.4"
 libraryDependencies += "com.github.alexandrnikitin" %% "bloom-filter" % "latest.release"

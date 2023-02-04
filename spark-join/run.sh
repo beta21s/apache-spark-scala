@@ -16,7 +16,7 @@ then
     --master spark://172.20.17.1:7077 \
     --conf spark.executor.memory=8g \
     --conf spark.dynamicAllocation.executorIdleTimeout=10000 \
-    --class com.truongtpa.JoinCluster.NoFilterHDFS /home/fit/Documents/apache-spark-scala/spark-join/target/scala-2.12/spark-join-assembly-0.1.0-SNAPSHOT.jar
+    --class com.truongtpa.JoinK8s.NoFilterHDFS /home/fit/Documents/apache-spark-scala/spark-join/target/scala-2.12/spark-join-assembly-0.1.0-SNAPSHOT.jar
   done
 fi
 
