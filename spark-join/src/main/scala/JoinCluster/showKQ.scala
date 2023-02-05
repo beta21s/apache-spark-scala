@@ -15,7 +15,7 @@ object showKQ {
       .master("local[*]")
       .getOrCreate()
 
-    val filename = "hdfs-k8s-scenarios-3.parquet"
+    val filename = "s3-cluster-scn1.parquet"
 
     import spark.implicits._
     val rs = spark.read.parquet("hdfs://172.20.9.30:9000/result/" + filename)
