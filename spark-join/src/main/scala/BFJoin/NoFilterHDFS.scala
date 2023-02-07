@@ -1,24 +1,28 @@
 package com.truongtpa
-package NoFTJoin
+package BFJoin
 
-import breeze.util.BloomFilter
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SparkSession
 
-object ClusterScenario4 {
+object NoFilterHDFS {
+
+  def checkContains(rdd: RDD[String], text: String): Boolean = {
+    val contains = rdd.filter(item => item == text)
+    return contains.count() > 0
+  }
+
   def main(args: Array[String]): Unit = {
 
     val startTimeMillis = System.currentTimeMillis()
-    val env = "cluster"
-    val appName = "scn4-no-filter-" + env
-    val filename = "scn4-no-filter-" + env + ".parquet"
-    // 50GB 30GB
 
-    val spark = SparkSession.builder()
-      // .master("local[*]")
+    val appName = "NoFilter HDFS K8s 50GB 30GB"
+    val filename = "no-filter-hdfs-k8s-scenarios-4.parquet"
+
+    val spark: SparkSession = SparkSession.builder()
+      .appName(appName)
       .config("spark.executor.memory", "12g")
       .config("spark.driver.maxResultSize", "30g")
-      .appName(appName)
+//      .master("local[*]")
       .getOrCreate()
 
     val sc = spark.sparkContext
@@ -33,7 +37,7 @@ object ClusterScenario4 {
     }
 
     var rddR: RDD[String] = spark.sparkContext.emptyRDD[String]
-    for (index <- 5 to 8) {
+    for (index <- 5 to 7) {
       println("Read file" + index)
       val path = "hdfs://172.20.9.30:9000/join-80/file0" + index
       val tmp: RDD[String] = sc.textFile(path).map(item => item.split(",")(0))
@@ -42,6 +46,7 @@ object ClusterScenario4 {
 
     val dfL = rddL.toDF()
     val dfR = rddR.toDF()
+
     val rdds = dfR.join(dfL, dfL("value") === dfR("value"), "leftsemi")
 
     var rs = appName + ": "

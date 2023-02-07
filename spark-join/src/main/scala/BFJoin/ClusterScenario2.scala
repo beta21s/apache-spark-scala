@@ -1,18 +1,18 @@
 package com.truongtpa
-package NoFTJoin
+package BFJoin
 
 import breeze.util.BloomFilter
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.SparkSession
 
-object ClusterScenario4 {
+object ClusterScenario2 {
   def main(args: Array[String]): Unit = {
 
     val startTimeMillis = System.currentTimeMillis()
     val env = "cluster"
-    val appName = "scn4-no-filter-" + env
-    val filename = "scn4-no-filter-" + env + ".parquet"
-    // 50GB 30GB
+    val appName = "scn2-bf-" + env
+    val filename = "scn2-bf-" + env + ".parquet"
+    // 20GB 10GB
 
     val spark = SparkSession.builder()
       // .master("local[*]")
@@ -25,7 +25,7 @@ object ClusterScenario4 {
     import spark.implicits._
 
     var rddL: RDD[String] = spark.sparkContext.emptyRDD[String]
-    for (index <- 0 to 4) {
+    for (index <- 0 to 2) {
       println("Read file" + index)
       val path = "hdfs://172.20.9.30:9000/join-80/file0" + index
       val tmp: RDD[String] = sc.textFile(path).map(item => item.split(",")(0))
@@ -33,16 +33,20 @@ object ClusterScenario4 {
     }
 
     var rddR: RDD[String] = spark.sparkContext.emptyRDD[String]
-    for (index <- 5 to 8) {
+    for (index <- 2 to 2) {
       println("Read file" + index)
       val path = "hdfs://172.20.9.30:9000/join-80/file0" + index
       val tmp: RDD[String] = sc.textFile(path).map(item => item.split(",")(0))
       rddR = tmp.union(rddR)
     }
 
-    val dfL = rddL.toDF()
-    val dfR = rddR.toDF()
-    val rdds = dfR.join(dfL, dfL("value") === dfR("value"), "leftsemi")
+    val bf = rddL.mapPartitions { iter =>
+      val bf = BloomFilter.optimallySized[String](20000000, 0.0001)
+      iter.foreach(i => bf += i)
+      Iterator(bf)
+    }.reduce(_ | _)
+
+    val rdds = rddR.filter(item => bf.contains(item))
 
     var rs = appName + ": "
     rs += "L: " + rddL.count()

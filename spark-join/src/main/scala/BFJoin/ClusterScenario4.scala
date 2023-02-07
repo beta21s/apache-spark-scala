@@ -1,5 +1,5 @@
 package com.truongtpa
-package NoFTJoin
+package BFJoin
 
 import breeze.util.BloomFilter
 import org.apache.spark.rdd.RDD
@@ -10,8 +10,8 @@ object ClusterScenario4 {
 
     val startTimeMillis = System.currentTimeMillis()
     val env = "cluster"
-    val appName = "scn4-no-filter-" + env
-    val filename = "scn4-no-filter-" + env + ".parquet"
+    val appName = "scn4-bf-" + env
+    val filename = "scn4-bf-" + env + ".parquet"
     // 50GB 30GB
 
     val spark = SparkSession.builder()
@@ -40,9 +40,13 @@ object ClusterScenario4 {
       rddR = tmp.union(rddR)
     }
 
-    val dfL = rddL.toDF()
-    val dfR = rddR.toDF()
-    val rdds = dfR.join(dfL, dfL("value") === dfR("value"), "leftsemi")
+    val bf = rddL.mapPartitions { iter =>
+      val bf = BloomFilter.optimallySized[String](20000000, 0.0001)
+      iter.foreach(i => bf += i)
+      Iterator(bf)
+    }.reduce(_ | _)
+
+    val rdds = rddR.filter(item => bf.contains(item))
 
     var rs = appName + ": "
     rs += "L: " + rddL.count()

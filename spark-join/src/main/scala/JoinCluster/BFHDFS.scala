@@ -19,7 +19,7 @@ object BFHDFS {
     val filename = "hdfs-cluster-scenarios-4.parquet"
 
     val spark: SparkSession = SparkSession.builder()
-      .appName(appName)
+//      .appName(appName)
       .config("spark.executor.memory", "12g")
       .config("spark.driver.maxResultSize", "30g")
 //      .master("local[*]")
@@ -30,7 +30,7 @@ object BFHDFS {
     import spark.implicits._
 
     var rddL: RDD[String] = spark.sparkContext.emptyRDD[String]
-    for (index <- 0 to 4) {
+    for (index <- 0 to 0) {
       println("Read file" + index)
       val path = "hdfs://172.20.9.30:9000/join-80/file0" + index
       val tmp: RDD[String] = sc.textFile(path).map(item => item.split(",")(0))
@@ -38,7 +38,7 @@ object BFHDFS {
     }
 
     var rddR: RDD[String] = spark.sparkContext.emptyRDD[String]
-    for (index <- 5 to 8) {
+    for (index <- 1 to 1) {
       println("Read file" + index)
       val path = "hdfs://172.20.9.30:9000/join-80/file0" + index
       val tmp: RDD[String] = sc.textFile(path).map(item => item.split(",")(0))

@@ -9,8 +9,10 @@ object ClusterScenario3 {
   def main(args: Array[String]): Unit = {
 
     val startTimeMillis = System.currentTimeMillis()
-    val appName = "BF K8s 30GB 20GB"
-    val filename = "scn3-no-ft-k8s.parquet"
+    val env = "cluster"
+    val appName = "scn3-no-filter-" + env
+    val filename = "scn3-no-filter-" + env + ".parquet"
+    // 30GB 20GB
 
     val spark = SparkSession.builder()
       // .master("local[*]")
