@@ -3,17 +3,22 @@ package JoinS3
 
 import breeze.util.BloomFilter
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.types._
+import org.apache.spark.sql.{DataFrame, SparkSession}
 
-object ClusterScenario2 {
+object Scenario2 {
   def main(args: Array[String]): Unit = {
 
-    val startTimeMillis = System.currentTimeMillis()
-    val appName = "BF S3 Cluster 20GB 10GB"
-    val filename = "s3-cluster-scn2.parquet"
+    /*
+    dataset 01: 5GB
+    dataset 02: 15GB
+   */
+
+    val appName = "cluster-scenario2"
+    val filename = appName + ".parquet"
 
     val spark = SparkSession.builder()
-      // .master("local[*]")
+      //      .master("local[*]")
       .config("spark.executor.memory", "12g")
       .config("spark.driver.maxResultSize", "30g")
       .appName(appName)
@@ -36,38 +41,35 @@ object ClusterScenario2 {
     val sc = spark.sparkContext
     import spark.implicits._
 
+    // Read file from S3 with capacity is 5GB
     var rddL: RDD[String] = spark.sparkContext.emptyRDD[String]
-    for (index <- 0 to 2) {
-      println("Read file" + index)
-      val path = "s3a://join-data-80/file0" + index
+    for (index <- 0 to 0) {
+      println("Read file" + f"$index%02d")
+      val path = "s3a://join-80/file" + f"$index%02d"
       val tmp: RDD[String] = sc.textFile(path).map(item => item.split(",")(0))
       rddL = tmp.union(rddL)
     }
 
-    var rddR: RDD[String] = spark.sparkContext.emptyRDD[String]
-    for (index <- 2 to 2) {
-      println("Read file" + index)
-      val path = "s3a://join-data-80/file0" + index
-      val tmp: RDD[String] = sc.textFile(path).map(item => item.split(",")(0))
-      rddR = tmp.union(rddR)
-    }
-
+    // Create filter with BF
     val bf = rddL.mapPartitions { iter =>
       val bf = BloomFilter.optimallySized[String](20000000, 0.0001)
       iter.foreach(i => bf += i)
       Iterator(bf)
     }.reduce(_ | _)
 
-    val rdds = rddR.filter(item => bf.contains(item))
+    // Read file from S3 with capacity is 15GB
+    var coutRS : Long = 0
+    for (index <- 1 to 3) {
+      println("Read file" + f"$index%02d")
+      val path = "s3a://join-80/file" + f"$index%02d"
+      val tmp: RDD[String] = sc.textFile(path)
+        .map(item => item.split(",")(0))
+        .filter(item => bf.contains(item))
+      coutRS = coutRS + tmp.count()
+    }
+
     var rs = appName + ": "
-    rs += "L: " + rddL.count()
-    rs += ", NumPartitions: " + rddL.getNumPartitions
-    rs += ", Partitions.length: " + rddL.partitions.length
-    rs += ", R: " + rddR.count()
-    rs += ", NumPartitions: " + rddR.getNumPartitions
-    rs += ", Partitions.length: " + rddR.partitions.length
-    rs += ", Equal: " + rdds.count()
-    rs += ", Time: " + (System.currentTimeMillis() - startTimeMillis) / 1000
+    rs += "Result: " + coutRS
 
     // Ghi KQ
     Seq(rs)
