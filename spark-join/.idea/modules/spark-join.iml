@@ -47,7 +47,6 @@
     <orderEntry type="library" name="sbt: com.jamesmurty.utils:java-xmlbuilder:0.4:jar" level="project" />
     <orderEntry type="library" name="sbt: com.jcraft:jsch:0.1.54:jar" level="project" />
     <orderEntry type="library" name="sbt: com.ning:compress-lzf:1.0.3:jar" level="project" />
-    <orderEntry type="library" name="sbt: com.redislabs:spark-redis_2.12:3.0.0:jar" level="project" />
     <orderEntry type="library" name="sbt: com.sun.jersey:jersey-core:1.9:jar" level="project" />
     <orderEntry type="library" name="sbt: com.sun.jersey:jersey-json:1.9:jar" level="project" />
     <orderEntry type="library" name="sbt: com.sun.jersey:jersey-server:1.9:jar" level="project" />
@@ -105,7 +104,6 @@
     <orderEntry type="library" name="sbt: org.apache.commons:commons-crypto:1.0.0:jar" level="project" />
     <orderEntry type="library" name="sbt: org.apache.commons:commons-lang3:3.9:jar" level="project" />
     <orderEntry type="library" name="sbt: org.apache.commons:commons-math3:3.4.1:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.apache.commons:commons-pool2:2.6.2:jar" level="project" />
     <orderEntry type="library" name="sbt: org.apache.commons:commons-text:1.6:jar" level="project" />
     <orderEntry type="library" name="sbt: org.apache.curator:curator-client:2.7.1:jar" level="project" />
     <orderEntry type="library" name="sbt: org.apache.curator:curator-framework:2.7.1:jar" level="project" />
@@ -218,7 +216,6 @@
     <orderEntry type="library" name="sbt: org.xerial.snappy:snappy-java:1.1.7.5:jar" level="project" />
     <orderEntry type="library" name="sbt: oro:oro:2.0.8:jar" level="project" />
     <orderEntry type="library" name="sbt: pl.edu.icm:JLargeArrays:1.5:jar" level="project" />
-    <orderEntry type="library" name="sbt: redis.clients:jedis:3.4.1:jar" level="project" />
     <orderEntry type="module-library">
       <library name="sbt: unmanaged-sources-and-docs">
         <CLASSES />

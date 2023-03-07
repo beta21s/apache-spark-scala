@@ -7,16 +7,16 @@ sbt assembly
 hadoop fs -put -f $PATH_JAR_BUILD $PATH_JAR_HDFS
 
 runSpark () {
-  for((i = 0; i < 10; i++))
+  for((i = 0; i < 1; i++))
   do
     spark-submit \
-    --master spark://172.20.17.1:7077 \
+    --master spark://172.20.6.10:7077 \
     --conf spark.dynamicAllocation.executorIdleTimeout=10000 \
     --class com.truongtpa.$1 $2
   done
 }
 
 runSpark JoinS3.Scenario1 $PATH_JAR_BUILD
-runSpark JoinS3.Scenario2 $PATH_JAR_BUILD
-runSpark JoinS3.Scenario3 $PATH_JAR_BUILD
-runSpark JoinS3.Scenario4 $PATH_JAR_BUILD
+#runSpark JoinS3.Scenario2 $PATH_JAR_BUILD
+#runSpark JoinS3.Scenario3 $PATH_JAR_BUILD
+#runSpark JoinS3.Scenario4 $PATH_JAR_BUILD

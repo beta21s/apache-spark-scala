@@ -14,7 +14,7 @@ object Scenario2 {
     dataset 02: 15GB
    */
 
-    val appName = "cluster-scenario2"
+    val appName = "k8-scenario2-2nd"
     val filename = appName + ".parquet"
 
     val spark = SparkSession.builder()
