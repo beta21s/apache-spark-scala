@@ -18,7 +18,7 @@ object Scenario1 {
     val filename = appName + ".parquet"
 
     val spark = SparkSession.builder()
-//      .master("local[*]")
+      .master("local[*]")
       .config("spark.executor.memory", "12g")
       .config("spark.driver.maxResultSize", "30g")
       .appName(appName)
@@ -45,7 +45,7 @@ object Scenario1 {
     var rddL: RDD[String] = spark.sparkContext.emptyRDD[String]
     for (index <- 0 to 0) {
       println("Read file" + f"$index%02d")
-      val path = "s3a://join-80/file" + f"$index%02d"
+      val path = "s3a://data-join/file" + f"$index%02d"
       val tmp: RDD[String] = sc.textFile(path).map(item => item.split(",")(0))
       rddL = tmp.union(rddL)
     }
@@ -61,7 +61,7 @@ object Scenario1 {
     var coutRS : Long = 0
     for (index <- 1 to 2) {
       println("Read file" + f"$index%02d")
-      val path = "s3a://join-80/file" + f"$index%02d"
+      val path = "s3a://data-join/file" + f"$index%02d"
       val tmp: RDD[String] = sc.textFile(path)
         .map(item => item.split(",")(0))
         .filter(item => bf.contains(item))
