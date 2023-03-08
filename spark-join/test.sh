@@ -14,3 +14,6 @@ do
   --conf spark.dynamicAllocation.executorIdleTimeout=10000 \
   --class com.truongtpa.Alluxio.ClusterScenario1 $PATH_JAR_BUILD
 done
+
+
+echo -n|openssl s_client -connect https://172.20.6.10:6443 | openssl x509 -outform PEM > selfsigned_certificate.pem

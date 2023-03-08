@@ -1,3 +1,4 @@
-[debug] not up to date. inChanged = true, force = false
-[debug] Updating ProjectRef(uri("file:/home/fit/Documents/apache-spark-scala/spark-join/"), "root")...
-[debug] Done updating ProjectRef(uri("file:/home/fit/Documents/apache-spark-scala/spark-join/"), "root")
+[warn] scala-library-2.12.8-sources.jar no longer exists at /home/fit/.cache/coursier/v1/https/repo1.maven.org/maven2/org/scala-lang/scala-library/2.12.8/scala-library-2.12.8-sources.jar
+[debug] not up to date. inChanged = false, force = false
+[debug] Updating ProjectRef(uri("file:/home/ubuntu/Documents/apache-spark-scala/spark-join/"), "root")...
+[debug] Done updating ProjectRef(uri("file:/home/ubuntu/Documents/apache-spark-scala/spark-join/"), "root")

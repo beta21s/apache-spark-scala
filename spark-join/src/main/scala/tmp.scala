@@ -1,10 +1,7 @@
 package com.truongtpa
 
 import breeze.util.BloomFilter
-import com.redislabs.provider.redis.toRedisContext
 import org.apache.spark.sql.SparkSession
-import com.redislabs.provider.redis._
-import com.redislabs.provider.redis._
 import com.truongtpa.JoinHDFS.checkContains
 import org.apache.spark.rdd.RDD
 
