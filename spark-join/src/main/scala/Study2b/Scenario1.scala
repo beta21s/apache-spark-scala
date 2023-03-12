@@ -1,24 +1,23 @@
 package com.truongtpa
-package JoinS3
+package Study2b
 
-import breeze.util.BloomFilter
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.{DataFrame, SparkSession}
+import org.apache.spark.sql.SparkSession
 
 object Scenario1 {
   def main(args: Array[String]): Unit = {
 
     /*
-    dataset 01: 5GB
-    dataset 02: 10GB
+    dataset 01: 40GB
+    dataset 02: 50GB
    */
 
-    val appName = "k8a-scenario1-2nd"
+    val appName = "scenario1-study2a"
 
     val spark = SparkSession.builder()
-      .master("local[*]")
+//      .master("local[*]")
       .config("spark.executor.memory", "12g")
-      .config("spark.driver.maxResultSize", "30g")
+      .config("spark.driver.maxResultSize", "25g")
       .appName(appName)
       .getOrCreate()
 
@@ -38,9 +37,9 @@ object Scenario1 {
 
     val sc = spark.sparkContext
 
-    // Read file from S3 with capacity is 5GB
+    // Read file from S3 with capacity is 40GB
     var rddL: RDD[String] = spark.sparkContext.emptyRDD[String]
-    for (index <- 1 to 1) {
+    for (index <- 0 to 7) {
       val fileName = f"$index%02d"
       rddL = Tools.readS3A(sc, fileName).union(rddL)
     }
@@ -48,14 +47,15 @@ object Scenario1 {
     // Create filter with BF
     val BF = Tools.rdd2BF(rddL)
 
-    // Read file from S3 with capacity is 10GB
+    // Read file from S3 with capacity is 50GB
     var coutRS : Long = 0
-    for (index <- 2 to 3) {
+    for (index <- 8 to 21) {
       val fileName = f"$index%02d"
       coutRS = coutRS + Tools.readS3A(sc, fileName).filter(item => BF.contains(item)).count()
     }
 
-    print("Result: " + coutRS)
+    print("\nResult: " + coutRS + "\n\n")
     sc.stop()
+
   }
 }

@@ -1,9 +1,8 @@
 package com.truongtpa
-package JoinS3
+package Study1
 
-import breeze.util.BloomFilter
 import org.apache.spark.rdd.RDD
-import org.apache.spark.sql.{DataFrame, SparkSession}
+import org.apache.spark.sql.SparkSession
 
 object Scenario1 {
   def main(args: Array[String]): Unit = {
@@ -13,12 +12,12 @@ object Scenario1 {
     dataset 02: 10GB
    */
 
-    val appName = "k8a-scenario1-2nd"
+    val appName = "cluster-scenario1-study1"
 
     val spark = SparkSession.builder()
-      .master("local[*]")
+//      .master("local[*]")
       .config("spark.executor.memory", "12g")
-      .config("spark.driver.maxResultSize", "30g")
+      .config("spark.driver.maxResultSize", "25g")
       .appName(appName)
       .getOrCreate()
 
@@ -55,7 +54,8 @@ object Scenario1 {
       coutRS = coutRS + Tools.readS3A(sc, fileName).filter(item => BF.contains(item)).count()
     }
 
-    print("Result: " + coutRS)
+    print("\nResult: " + coutRS + "\n\n")
     sc.stop()
+
   }
 }
