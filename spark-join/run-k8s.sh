@@ -5,7 +5,7 @@ export PATH_JAR_HDFS=hdfs://172.20.9.30:9000/jar/spark-join-assembly-0.1.0-SNAPS
 
 export TOKEN=`cat tolken.txt`
 export caCertFile=/home/ubuntu/Documents/apache-spark-scala/spark-join/selfsigned_certificate.pem
-export STUDY=Study2a
+export STUDY=Study2b
 #export IMAGE_NAME=gcr.io/spark-operator/spark:v3.0.0
 export IMAGE_NAME=truong96/spark-k8s:v3.0.1
 

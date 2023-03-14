@@ -8,16 +8,16 @@ object Scenario4 {
   def main(args: Array[String]): Unit = {
 
     /*
-    dataset 01: 40GB
+    dataset 01: 70GB
     dataset 02: 80GB
    */
 
-    val appName = "scenario4-study2a"
+    val appName = "scenario4-study2b"
 
     val spark = SparkSession.builder()
 //      .master("local[*]")
       .config("spark.executor.memory", "12g")
-      .config("spark.driver.maxResultSize", "130g")
+      .config("spark.driver.maxResultSize", "160g")
       .appName(appName)
       .getOrCreate()
 
@@ -37,9 +37,9 @@ object Scenario4 {
 
     val sc = spark.sparkContext
 
-    // Read file from S3 with capacity is 40GB
+    // Read file from S3 with capacity is 70GB
     var rddL: RDD[String] = spark.sparkContext.emptyRDD[String]
-    for (index <- 0 to 7) {
+    for (index <- 16 to 29) {
       val fileName = f"$index%02d"
       rddL = Tools.readS3A(sc, fileName).union(rddL)
     }
@@ -49,7 +49,7 @@ object Scenario4 {
 
     // Read file from S3 with capacity is 80GB
     var coutRS : Long = 0
-    for (index <- 8 to 23) {
+    for (index <- 0 to 15) {
       val fileName = f"$index%02d"
       coutRS = coutRS + Tools.readS3A(sc, fileName).filter(item => BF.contains(item)).count()
     }
